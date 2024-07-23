@@ -1,4 +1,5 @@
 import tkinter as tk
+from test_gpt.test_gpt import obtain_initial_plan, obtain_model_explanation
 
 ### Adapted code from: https://www.w3resource.com/python-exercises/tkinter/python-tkinter-layout-management-exercise-7.php ###
 
@@ -12,7 +13,7 @@ def send_message():
         message_entry.delete(0, tk.END)
 
         message_history.config(state=tk.NORMAL)
-        models_response = "Time for the model's response" # query model here with message
+        models_response = obtain_model_explanation(message) # "Model's explanation" 
         message_history.insert(tk.END, f"\nRoboHelper: {models_response}\n")
         message_history.config(state=tk.DISABLED)
         message_entry.delete(0, tk.END)
@@ -24,6 +25,12 @@ parent.title("Chat Application")
 # Create a Text widget for message history
 message_history = tk.Text(parent, wrap=tk.WORD, width=40, height=10)
 message_history.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+message_history.config(state=tk.DISABLED)
+
+# Initial robot play 
+message_history.config(state=tk.NORMAL)
+models_response = obtain_initial_plan() # "Model's initial plan" 
+message_history.insert(tk.END, f"\nRoboHelper: {models_response}\n")
 message_history.config(state=tk.DISABLED)
 
 # Create an Entry widget for entering messages
