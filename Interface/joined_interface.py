@@ -4,7 +4,7 @@ from tkVideoPlayer import TkinterVideo
 import datetime
 from tkinter import filedialog
 
-# TODO from test_gpt.test_gpt import obtain_initial_plan, obtain_model_explanation
+from test_gpt import obtain_initial_plan, obtain_model_explanation
 
 ### Code adapted from the following
 # https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
@@ -35,7 +35,6 @@ class model_recon(tk.Tk):
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
-
 
 # Watch video of robot attempting task
 class WatchVideo(tk.Frame):
@@ -85,7 +84,6 @@ class WatchVideo(tk.Frame):
             self.vid_player.pause()
             self.play_pause_btn["text"] = "Play"
 
-
     def video_ended(self, event):
         """ handle video ended """
         self.play_pause_btn["text"] = "Play"
@@ -114,7 +112,7 @@ class ChatPage(tk.Frame):
 
         # Initial robot play 
         self.message_history.config(state=tk.NORMAL)
-        self.models_response = "Model's initial plan" # TODO obtain_initial_plan() 
+        self.models_response = obtain_initial_plan() # "Model's initial plan"
         self.message_history.insert(tk.END, f"\nRoboHelper: {self.models_response}\n")
         self.message_history.config(state=tk.DISABLED)
 
@@ -137,7 +135,7 @@ class ChatPage(tk.Frame):
             self.message_entry.delete(0, tk.END)
 
             self.message_history.config(state=tk.NORMAL)
-            models_response = "Model's explanation" # TODO obtain_model_explanation(message) 
+            models_response = obtain_model_explanation(message) # "Model's explanation"
             self.message_history.insert(tk.END, f"\nRoboHelper: {models_response}\n")
             self.message_history.config(state=tk.DISABLED)
             self.message_entry.delete(0, tk.END)

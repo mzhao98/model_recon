@@ -5,14 +5,17 @@ import kinpy as kp
 
 from pathlib import Path
 
-import torch
-import torch.nn as nn
+# import torch
+# import torch.nn as nn
 
 from openai import OpenAI
-
+import os
 
 def generate_plan(prompt):
-    client = OpenAI()
+    key = os.environ.get("OPENAI_API_KEY")
+    client = OpenAI(
+        api_key = key,
+    )
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -25,11 +28,17 @@ def generate_plan(prompt):
     )
 
     response = completion.choices[0].message
-    return response
+
+    formatted_response = response.content
+
+    return formatted_response
 
 
 def generate_baseline_explanation(prompt):
-    client = OpenAI()
+    key = os.environ.get("OPENAI_API_KEY")
+    client = OpenAI(
+        api_key = key,
+    )
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -42,7 +51,6 @@ def generate_baseline_explanation(prompt):
     )
 
     response = completion.choices[0].message
-    print("response: ", response)
     return response
 
 
@@ -63,7 +71,13 @@ def obtain_initial_plan():
         '''
 
     robot_initial_plan = generate_plan(initial_prompt)
-    return robot_initial_plan
+
+    # Formatting output
+    robot_initial_plan_formatted = robot_initial_plan.split("Task Plan:")[-1]
+    robot_initial_plan_formatted = robot_initial_plan_formatted.replace("Robot Plan: ", "My plan is to: ")
+    robot_initial_plan_formatted = robot_initial_plan_formatted.replace("Robot plan: ", "My plan is to: ")
+
+    return robot_initial_plan_formatted
 
 
 def obtain_model_explanation(message):
@@ -73,7 +87,11 @@ def obtain_model_explanation(message):
     '''
 
     source_of_confusion = generate_baseline_explanation(human_clarification_prompt)
-    return source_of_confusion
+
+    # Formatting result
+    source_of_confusion_formatted = source_of_confusion.content
+
+    return source_of_confusion_formatted
 
 
 # if __name__ == '__main__':
