@@ -4,7 +4,7 @@ import json
 import argparse
 import time
 
-# Note, this script was obtained from the demo qualifier project
+# Credit: This is a modified version of a script obtained from ​Xijia (Polina) Zhang. 
 
 api_key = os.environ.get("OPENAI_API_KEY")
 openai.api_key = api_key
