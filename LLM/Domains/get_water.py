@@ -44,6 +44,14 @@ def get_question():
     question = "Why did you get me water from the sink?"
     return question
 
+def get_explanation(): 
+    """
+    Explanation.
+    For now, same for both models.
+    """
+    explanation = "I provided water from the sink, but from your question I now understand that you would like water from the fridge. I believe that this is because water from the fridge is filtered and you preffer filtered water."
+    return explanation
+
 ### Functions used by Unstructured LLM model ###
 def get_actions():
     """
@@ -60,14 +68,6 @@ def get_confusion():
     Used for unstructured LLM model.
     """
     confusion = "The human is confused about why the water was obtained from the sink when it could have been obtained elsewhere, such as the fridge. This is confusing, as obtaining water from the fridge is prefferable, as it has the attribute of being filtered."
-    return confusion
-
-def get_confusion_explanation(): 
-    """
-    Explanation to address human confusion (for now, same explanation as facts-based explanation).
-    Used for unstructured LLM model.
-    """
-    confusion = get_facts_explanation()
     return confusion
 
 ### Functions used by Facts-based LLM model ###
@@ -99,11 +99,3 @@ def get_facts_to_communicate():
         Filtered water can be found in fridge (private-human).\n
     """
     return facts_to_communicate
-
-def get_facts_explanation():
-    """
-    Explanation created from facts to be communicated.
-    Used for facts-based LLM model.
-    """
-    facts_explanation = "I provided water from the sink, but from your question I now understand that you would like water from the fridge. I believe that this is because water from the fridge is filtered and you preffer filtered water."
-    return facts_explanation

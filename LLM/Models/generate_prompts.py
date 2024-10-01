@@ -4,6 +4,14 @@ import json
 
 import Domains.get_water as water
 import Domains.load_dishes as dishes
+import Explanation.contrastive_explanations as explanation
+
+
+# global variables
+example_domain = water
+target_domain = dishes
+
+contrastive = 1
 
 
 # get file paths for skeleton code, and where to save the prompt (json and human read-ible txt)
@@ -51,7 +59,7 @@ def load_txt_file(file_path):
 
 
 # populate dynamic content for Unstructured LLM Model 
-def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
+def unstructured_LLM_prompt_content(file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
 
@@ -63,22 +71,26 @@ def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
     with open(file_path, 'r') as file:
         file_content = file.read()
 
-    # human input
-    file_content = file_content.replace("<insert-target-human-question>", target_domain.get_question())
+    # explanation design
+    contrastive_explanation_design = explanation.get_contrastive_explanation() if contrastive else explanation.get_non_contrastive_explanation()
+    file_content = file_content.replace("<insert-explanation-design>", contrastive_explanation_design) 
 
     # example domain
     file_content = file_content.replace("<insert-example-domain-name>", example_domain.get_name())
     file_content = file_content.replace("<insert-example-task>", example_domain.get_task())
+
     file_content = file_content.replace("<insert-example-plan>", example_domain.get_plan())
     file_content = file_content.replace("<insert-example-interrupted-action>", example_domain.get_interrupted_action())
     file_content = file_content.replace("<insert-example-human-question>", example_domain.get_question())
+
     file_content = file_content.replace("<insert-example-confusion-source>", example_domain.get_confusion())
-    file_content = file_content.replace("<insert-example-explanation>", example_domain.get_confusion_explanation())
+    file_content = file_content.replace("<insert-example-explanation>", example_domain.get_explanation())
     
 
     # target domain
     file_content = file_content.replace("<insert-target-domain-name>", target_domain.get_name())
     file_content = file_content.replace("<insert-target-task>", target_domain.get_task())
+
     file_content = file_content.replace("<insert-target-plan>", target_domain.get_plan())
     file_content = file_content.replace("<insert-target-interrupted-action>", target_domain.get_interrupted_action())
     file_content = file_content.replace("<insert-target-human-question>", target_domain.get_question())
@@ -87,7 +99,7 @@ def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
 
 
 # populate dynamic content for Facts based LLM Model
-def facts_based_LLM_prompt_content(example_domain, target_domain, file_path):
+def facts_based_LLM_prompt_content(file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
 
@@ -99,53 +111,59 @@ def facts_based_LLM_prompt_content(example_domain, target_domain, file_path):
     with open(file_path, 'r') as file:
         file_content = file.read()
 
+    # explanation design
+    contrastive_explanation_design = explanation.get_contrastive_explanation() if contrastive else explanation.get_non_contrastive_explanation()
+    file_content = file_content.replace("<insert-explanation-design>", contrastive_explanation_design) 
+
     # example domain
     file_content = file_content.replace("<insert-example-domain-name>", example_domain.get_name())
     file_content = file_content.replace("<insert-example-task>", example_domain.get_task())
-    file_content = file_content.replace("<insert-example-question>", example_domain.get_question())
+
+    file_content = file_content.replace("<insert-example-plan>", example_domain.get_plan())
+    file_content = file_content.replace("<insert-example-interrupted-action>", example_domain.get_interrupted_action())
+    file_content = file_content.replace("<insert-example-human-question>", example_domain.get_question())
+
     file_content = file_content.replace("<insert-example-facts>", example_domain.get_facts())
     file_content = file_content.replace("<insert-example-facts-to-communicate>", example_domain.get_facts_to_communicate())
-    file_content = file_content.replace("<insert-example-facts-explanation>", example_domain.get_facts_explanation())
+    file_content = file_content.replace("<insert-example-explanation>", example_domain.get_explanation())
 
     # target domain
     file_content = file_content.replace("<insert-target-domain-name>", target_domain.get_name())
     file_content = file_content.replace("<insert-target-task>", target_domain.get_task())
-    file_content = file_content.replace("<insert-target-question>", target_domain.get_question())
+    
+    file_content = file_content.replace("<insert-target-plan>", target_domain.get_plan())
+    file_content = file_content.replace("<insert-target-interrupted-action>", target_domain.get_interrupted_action())
+    file_content = file_content.replace("<insert-target-human-question>", target_domain.get_question())
 
     return file_content
 
 
 # Unstructured LLM Model 
-def unstructured_LLM(model_name, example_domain, target_domain):
+def unstructured_LLM(model_name):
     skeleton_file_path, json_file_path, txt_file_path = get_file_paths(model_name)
 
+    # note that right now, the first human question is hard coded (since no human is observing the robot behavior)
     # human_clarification_question = input("Enter the user clarification: ")
 
     save_to_json(
-        unstructured_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=skeleton_file_path), 
+        unstructured_LLM_prompt_content(file_path=skeleton_file_path), 
         json_file_path,
         txt_file_path)
 
 
 # Facts based LLM Model
-def facts_based_LLM(model_name, example_domain, target_domain):
+def facts_based_LLM(model_name):
     skeleton_file_path, json_file_path, txt_file_path = get_file_paths(model_name)
 
     save_to_json(
-        facts_based_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=skeleton_file_path), 
+        facts_based_LLM_prompt_content(file_path=skeleton_file_path), 
         json_file_path,
         txt_file_path)
 
 
 def main():
-
-    example_domain = water
-    target_domain = dishes
-
-    unstructured_LLM("unstructured_LLM", example_domain, target_domain)
-    facts_based_LLM("facts_based_LLM", example_domain, target_domain)
-
-    # TODO add counterfactual explanation
+    unstructured_LLM("unstructured_LLM")
+    facts_based_LLM("facts_based_LLM")
 
 
 if __name__ == "__main__":

@@ -1,24 +1,32 @@
 You are Jaco Robotic Arm, and your base is attached to a table. 
 You are tasked with helping a human with day-to-day tasks in the home. 
 
+Given a task description, you are carrying out a plan of actions. The human interrupts with a question.
+
 Given a task description and a human question, you will generate set of facts that are relevant. 
 Each fact should only be one sentence long. 
-
 For each fact, provide a label for either `(public)`, `(private-robot)`, or `(private-human)`.
 If the fact is labeled as `(public)`, then both the human and the robot believe this fact to be true.
 If the fact is labeled as `(private-robot)`, then the robot believes this fact to be true, but the human doesn't know this fact or doesn't believe this fact to be true.
 If the fact is labeled as `(private-human)`, then the human believes this fact to be true, but the robot doesn't know this fact or doesn't believe this fact to be true.
 
-You will be provided with a task in an example domain to illustrate what a set of facts could look like. 
-You will then be given a new domain, where you will identify the relevent set of facts.
+Then, you will provide a short explanation to address the human's confusion.
+
+You will be provided with a task in an example domain to illustrate what what a set of facts and subsequent explanation should look like. 
+You will then be given a new domain, where you will identify the relevent set of facts and provide an explanation.
+
+When providing an explanation, if the human asks you a Why question, identify the fact (what happened), and it's implicit foil (human expectation). Then, in your explanation, incorporate both fact and foil..
+
 
 **Example Domain: get_water**
 
 Example task: 
 The robot must must assist the human in getting them a glass of water.
 
-Example human question:
-Why did you get me water from the sink?
+Example plan of actions:
+Suggested Plan: [get glass of water, fill glass of water, bring water to human].
+
+As the robot was fill glass of water, the human asked the following question: Why did you get me water from the sink?.
 
 Optimal response for this example task: 
 All Facts: 
@@ -47,10 +55,12 @@ Explanation: I provided water from the sink, but from your question I now unders
 Your task: 
 The robot must assist the human in doing the dishes. 
 
-Human question:
-Why did you load a clean plate into the dishwasher?
+Plan of actions:
+Suggested Plan: [get glass of water, fill glass of water, bring water to human].
 
-In your response, strictly adher to this format:
+As the robot was loading the dishwasher, the human asked the following question: Why did you load a clean plate into the dishwasher?.
+
+In your answer, strictly adher to this format:
 `All Facts: [list the relevant facts, each labeled either as `(public)`, `(private-robot)`, or `(private-human)`]`
 `Facts to Communicate: [list the `(private-robot)` or `(private-human)` facts that need to be communicated to address the human question]`
-`Explanation: Provide an explanation to the human using the list of facts that need to be communicated. Do not promise future changes to behavior.`
+`Explanation: Provide a short explanation to the human using the list of facts that need to be communicated. Do not promise future changes to behavior.`

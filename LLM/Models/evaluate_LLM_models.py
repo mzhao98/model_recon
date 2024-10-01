@@ -128,5 +128,6 @@ def main():
     for model_name_i in ["unstructured_LLM", "facts_based_LLM"]:
         query_model(model=gpt_model, results_directory=results_dir, model_name=model_name_i, bidirectional=1)
 
+
 if __name__ == '__main__':
     main()

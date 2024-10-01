@@ -1,3 +1,3 @@
-Confusion Source: The human is concerned that the robot is not checking whether dishes are clean or dirty before loading them into the dishwasher.
+Confusion Source: The human is concerned that dishes not used or verified as dirty by them are being loaded into the dishwasher, potentially leading to clean dishes being washed unnecessarily.
 
-Explanation: I currently follow the protocol of loading dishes based on their placement in designated areas. I will take note of your preference for checking the cleanliness of each dish before loading it into the dishwasher.
+Explanation: I will load only the dishes that I observe you using into the dishwasher to ensure that no clean dishes are washed unnecessarily. This helps in conserving water and energy.

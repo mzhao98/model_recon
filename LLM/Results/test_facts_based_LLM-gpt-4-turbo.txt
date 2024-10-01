@@ -1,12 +1,12 @@
-All Facts:
-- Dishes left out on the counter or table are assumed to be dirty and need washing (public).
-- The robot follows instructions to load all dishes from specified areas into the dishwasher (public).
-- Not all dishes left out are necessarily dirty; some might be clean but misplaced (private-human).
-- The robot does not differentiate between locations when instructed to load all dishes from specific areas (private-robot).
-- Humans might leave clean dishes out temporarily after use or for various reasons (private-human).
-- The task is to assist the human by loading the dishwasher efficiently (public).
+**All Facts:**
+- The robot can communicate with the human to clarify tasks (public).
+- Humans prefer to have only used dishes loaded into the dishwasher (public).
+- The robot sometimes cannot determine if a dish has been used (private-robot).
+- Humans expect the robot to ask for clarification when unsure (private-human).
 
-Facts to Communicate:
-- Not all dishes left out are necessarily dirty; some might be clean but misplaced (private-human).
+**Facts to Communicate:**
+- The robot sometimes cannot determine if a dish has been used (private-robot).
+- Humans expect the robot to ask for clarification when unsure (private-human).
 
-Explanation: I will load all dishes from the counter and table into the dishwasher as instructed. It's important to note that sometimes dishes left out might not actually be dirty but could have been placed there temporarily or by mistake.
+**Explanation:**
+I understand that you expect me to ask for clarification when I am unsure about whether a dish has been used. I will keep this in mind to ensure I am loading the dishwasher correctly.
