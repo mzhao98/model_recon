@@ -6,8 +6,18 @@ import Domains.get_water as water
 import Domains.load_dishes as dishes
 
 
+# get file paths for skeleton code, and where to save the prompt (json and human read-ible txt)
+def get_file_paths(model_name):
+
+    skeleton_file_path= f"Prompts/{model_name}_prompt_skeleton.txt"
+    json_file_path= f"Prompts/{model_name}_prompt.json"
+    txt_file_path= f"Prompts//human_readible_{model_name}_prompt.txt"
+
+    return skeleton_file_path, json_file_path, txt_file_path
+
+
 # save promt to json
-def save_to_json(data, file_path):
+def save_to_json(data, json_file_path, txt_file_path):
 
     # format prompt with role and content fields
     def role_content_formatting(prompt_content):
@@ -20,8 +30,12 @@ def save_to_json(data, file_path):
 
     json_formatted_data = role_content_formatting(data)
 
-    with open(file_path, 'w') as f:
+    # json (to pass in prompt)
+    with open(json_file_path, 'w') as f:
         json.dump(json_formatted_data, f)
+
+    with open(txt_file_path, 'w') as f:
+        f.write(data)
 
 
 # read prompt txt files
@@ -102,25 +116,25 @@ def facts_based_LLM_prompt_content(example_domain, target_domain, file_path):
 
 
 # Unstructured LLM Model 
-def unstructured_LLM(example_domain, target_domain):
-
-    file_path='Prompts/unstructured_LLM_prompt_skeleton.txt'
+def unstructured_LLM(model_name, example_domain, target_domain):
+    skeleton_file_path, json_file_path, txt_file_path = get_file_paths(model_name)
 
     # human_clarification_question = input("Enter the user clarification: ")
 
     save_to_json(
-        unstructured_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=file_path), 
-        'Prompts/unstructured_LLM_prompt.json')
+        unstructured_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=skeleton_file_path), 
+        json_file_path,
+        txt_file_path)
 
 
 # Facts based LLM Model
-def facts_based_LLM(example_domain, target_domain):
-
-    file_path='Prompts/facts_based_LLM_prompt_skeleton.txt'
+def facts_based_LLM(model_name, example_domain, target_domain):
+    skeleton_file_path, json_file_path, txt_file_path = get_file_paths(model_name)
 
     save_to_json(
-        facts_based_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=file_path), 
-        'Prompts/facts_based_LLM_prompt.json')
+        facts_based_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=skeleton_file_path), 
+        json_file_path,
+        txt_file_path)
 
 
 def main():
@@ -128,8 +142,10 @@ def main():
     example_domain = water
     target_domain = dishes
 
-    unstructured_LLM(example_domain, target_domain)
-    facts_based_LLM(example_domain, target_domain)
+    unstructured_LLM("unstructured_LLM", example_domain, target_domain)
+    facts_based_LLM("facts_based_LLM", example_domain, target_domain)
+
+    # TODO add counterfactual explanation
 
 
 if __name__ == "__main__":
