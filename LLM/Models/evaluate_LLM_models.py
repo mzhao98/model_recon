@@ -13,12 +13,14 @@ def load_txt_file(file_path):
         print(f"An error occurred: {e}")
 
 
-def CoT_first_call(conversation, model, results_directory, queryname, plan_path):
-    with open(plan_path, 'r') as file:
-        plan_data = json.load(file)[0]
+def CoT_first_call(conversation, model, results_directory, queryname, prompt_path):
 
+    # add next conversational input
+    with open(prompt_path, 'r') as file:
+        plan_data = json.load(file)[0]
     conversation.add_message(str(plan_data['role']), str(plan_data['content']))
     
+    # query llm
     success, prompt_answer_dir = query_and_save(conversation, 
                    directory=results_directory, 
                    queryname=queryname, 
@@ -27,16 +29,22 @@ def CoT_first_call(conversation, model, results_directory, queryname, plan_path)
     return conversation, success, prompt_answer_dir
 
 
-def CoT_subsequent_calls(conversation, model, results_directory, prompt_answer_dir, queryname, plan_path):
+def CoT_subsequent_calls(conversation, model, results_directory, prompt_answer_dir, queryname, prompt_path):
+    """
+    Subsequent calls to model, made without feedback from human.
+    Currently unused.
+    """
 
+    # add previous conversation content 
     prompt_answer = load_txt_file(prompt_answer_dir) 
     conversation.add_message("assistant", prompt_answer)
 
-    with open(plan_path, 'r') as file:
+    # add next conversational input
+    with open(prompt_path, 'r') as file:
         plan_data = json.load(file)[0]
-
     conversation.add_message(str(plan_data['role']), str(plan_data['content']))
     
+    # query llm
     success, prompt_answer_dir = query_and_save(conversation, 
                    directory=results_directory, 
                    queryname=queryname, 
@@ -45,55 +53,80 @@ def CoT_subsequent_calls(conversation, model, results_directory, prompt_answer_d
     return conversation, success, prompt_answer_dir
 
 
-def unstructured_LLM(model, results_directory):
-    print("\n*** Unstructured LLM Model ***\n")
+def query_model_with_human_response(conversation, model, results_directory, prompt_answer_dir, queryname, human_response):
+
+    # add previous conversation content 
+    prompt_answer = load_txt_file(prompt_answer_dir) 
+    conversation.add_message("assistant", prompt_answer)
+
+    # add next conversational input (from human response)
+    conversation.add_message("user", human_response)
+    
+    # query llm
+    success, prompt_answer_dir = query_and_save(conversation, 
+                   directory=results_directory, 
+                   queryname=queryname, 
+                   model=model)
+    
+    return conversation, success, prompt_answer_dir
+
+
+def query_model(model, results_directory, model_name, bidirectional=0):
+    print(f"\n*** {model_name} ***\n")
     conversation = Conversation()
     
     ### confusion prompt ###
-    conversation, success, _ = CoT_first_call(
+    conversation, success, prompt_answer_dir = CoT_first_call(
         conversation, 
         model, 
         results_directory, 
-        queryname="test_unstructured_LLM", 
-        plan_path='Prompts/unstructured_LLM_prompt.json'
+        queryname=f"test_{model_name}", 
+        prompt_path=f"Prompts/{model_name}_prompt.json"
     )
 
     if not success:
         return False # time limit exceeded 
     else:
-        return True
 
+        if bidirectional:
 
-def facts_based_LLM(model, results_directory):
-    print("\n*** Facts-based LLM Model ***\n")
+            print('\n')
+            input_message = "\nIf you are satisfied, enter \"approved\", else enter your response.  "
 
-    conversation = Conversation()
+            human_input = input(input_message)
 
-    ### plan prompt ###
-    conversation, success, all_facts_prompt_answer_dir = CoT_first_call(
-        conversation, 
-        model, 
-        results_directory, 
-        queryname="test_facts_based_LLM", 
-        plan_path='Prompts/facts_based_LLM_prompt.json'
-    )
+            while "approve" not in human_input:
 
-    if not success:
-        return False # time limit exceeded 
-    else:
-        return True
+                human_input_prompt = ""
+
+                with open(f"Prompts/{model_name}_followup_prompt_skeleton.txt", 'r') as file:
+                    human_input_prompt = file.read()
+                human_input_prompt = human_input_prompt.replace("<insert-human-response>", human_input)
+
+                conversation, success, prompt_answer_dir = query_model_with_human_response(
+                    conversation, 
+                    model, 
+                    results_directory, 
+                    prompt_answer_dir,
+                    queryname=f"test_{model_name}", # "test_{model_name}_with_human_response_{i}"
+                    human_response=human_input
+                )
+                if not success:
+                    return False # time limit exceeded 
+
+                print('\n')
+                human_input = input(input_message)
+        else:
+            return True
+    return True
 
 
 def main():
     gpt_model = 'gpt-4-turbo'
     results_dir = '../Results/'
 
-    unstructured_LLM(model=gpt_model, results_directory=results_dir)
-    facts_based_LLM(model=gpt_model, results_directory=results_dir)
-
+    for model_name_i in ["unstructured_LLM", "facts_based_LLM"]:
+        query_model(model=gpt_model, results_directory=results_dir, model_name=model_name_i, bidirectional=1)
 
 if __name__ == '__main__':
     main()
-
-    # TODO could have chain of thought in one json (but need to plug in model's answer)
-    # TODO (assistant vs user vs system)

@@ -1,0 +1,6 @@
+The human has responded by saying <insert-human-response>.
+
+In your answer, strictly adher to this format:
+`If needed, update the Confusion Source: [Provide the most likely source for the human's confusion (only one).]`
+`If needed, provide an Explanation: [Provide a short explanation to address this source of confusion. Do not promise future changes to behavior.]`
+`Thank the human for their input.`

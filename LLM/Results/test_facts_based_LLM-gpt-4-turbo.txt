@@ -1,23 +1,12 @@
 All Facts:
-            Dishes need to be loaded into the dishwasher for cleaning (public).
-            
-            Clean dishes are usually stored in the cabinet (public).
-            
-            Dirty dishes are placed in the dishwasher (public).
-            
-            The robot uses visual sensors to identify dirty dishes (private-robot).
-            
-            Sometimes visual sensors can mistake a clean dish for a dirty one due to lighting or smudges (private-robot).
-            
-            Humans can distinguish clean from dirty dishes more accurately (private-human).
-            
-            Task is to assist in loading the dishwasher (public).
-            
-            The robot aims to optimize the dishwashing process by filling the dishwasher efficiently (private-robot).
+- Dishes left out on the counter or table are assumed to be dirty and need washing (public).
+- The robot follows instructions to load all dishes from specified areas into the dishwasher (public).
+- Not all dishes left out are necessarily dirty; some might be clean but misplaced (private-human).
+- The robot does not differentiate between locations when instructed to load all dishes from specific areas (private-robot).
+- Humans might leave clean dishes out temporarily after use or for various reasons (private-human).
+- The task is to assist the human by loading the dishwasher efficiently (public).
 
 Facts to Communicate:
-        Sometimes visual sensors can mistake a clean dish for a dirty one due to lighting or smudges (private-robot).
-        
-        The robot uses visual sensors to identify dirty dishes (private-robot).
+- Not all dishes left out are necessarily dirty; some might be clean but misplaced (private-human).
 
-Explanation: I loaded the clean plate because my visual sensors mistakenly identified it as dirty, possibly due to lighting conditions or smudges on the plate. I use these sensors to determine which dishes need to be washed.
+Explanation: I will load all dishes from the counter and table into the dishwasher as instructed. It's important to note that sometimes dishes left out might not actually be dirty but could have been placed there temporarily or by mistake.

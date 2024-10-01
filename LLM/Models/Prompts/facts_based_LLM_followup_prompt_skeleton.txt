@@ -1,0 +1,7 @@
+The human has responded by saying <insert-human-response>.
+
+In your answer, strictly adher to this format:
+`If needed, update the list of all facts, and make sure to still label each fact as either `(public)`, `(private-robot)`, or `(private-human)`.`
+`If needed, identify the Facts to Communicate: [list the `(private-robot)` or `(private-human)` facts that need to be communicated to address the human feedback. Be careful not to accidentally label a public fact as private. For example, if human tells you a fact, that fact should be '(public)'.].`
+`If needed, provide an Explanation: Provide an explanation to the human using the list of facts that need to be communicated. Do not promise future changes to behavior.`
+`Thank the human for their input.`

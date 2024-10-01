@@ -6,8 +6,8 @@ Each fact should only be one sentence long.
 
 For each fact, provide a label for either `(public)`, `(private-robot)`, or `(private-human)`.
 If the fact is labeled as `(public)`, then both the human and the robot believe this fact to be true.
-If the fact is labeled as `(private-robot)`, then the robot believes this fact to be true, but the human doesn't know this fact or does'nt believe this fact to be true.
-If the fact is labeled as `(private-human)`, then the human believes this fact to be true, but the robot doesn't know this fact or does'nt believe this fact to be true.
+If the fact is labeled as `(private-robot)`, then the robot believes this fact to be true, but the human doesn't know this fact or doesn't believe this fact to be true.
+If the fact is labeled as `(private-human)`, then the human believes this fact to be true, but the robot doesn't know this fact or doesn't believe this fact to be true.
 
 You will be provided with a task in an example domain to illustrate what a set of facts could look like. 
 You will then be given a new domain, where you will identify the relevent set of facts.
