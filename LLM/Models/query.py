@@ -124,7 +124,7 @@ def callAPI(conversation, model, temperature, max_tokens):
         messages=conversation.get_messages(),
         max_tokens=max_tokens
     )
-    print(f"\n{model} answer: {completion.choices[0].message.content}")
+    print(f"{completion.choices[0].message.content}")
     return completion.choices[0].message.content
 
 

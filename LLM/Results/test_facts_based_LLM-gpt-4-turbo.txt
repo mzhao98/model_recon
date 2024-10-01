@@ -1,0 +1,21 @@
+All Facts:
+            Dishes need to be loaded into the dishwasher for cleaning (public).
+            
+            Clean dishes are usually stored in the cabinets (public).
+            
+            The robot uses visual sensors to determine if a dish is clean or dirty (private-robot).
+            
+            Sometimes visual sensors can mistake a clean dish for a dirty one due to lighting or smudges (private-robot).
+            
+            Humans can usually tell by a quick glance if a dish is clean or dirty (private-human).
+            
+            The robot is programmed to ensure all dishes in the sink area are loaded into the dishwasher (private-robot).
+            
+            Humans expect only dirty dishes to be loaded into the dishwasher (private-human).
+
+Facts to Communicate:
+        Sometimes visual sensors can mistake a clean dish for a dirty one due to lighting or smudges (private-robot).
+        
+        The robot is programmed to ensure all dishes in the sink area are loaded into the dishwasher (private-robot).
+
+Explanation: I loaded the clean plate because my visual sensors sometimes mistake clean dishes for dirty ones due to factors like lighting or smudges. Additionally, I am programmed to load all dishes found in the sink area into the dishwasher.

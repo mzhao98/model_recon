@@ -13,13 +13,7 @@ def load_txt_file(file_path):
         print(f"An error occurred: {e}")
 
 
-def evaluate_model(model, results_directory='../Results/'):
-    conversation = Conversation()
-
-    ### plan prompt ###
-    queryname = "plan_test"
-
-    plan_path = 'Prompts/plan_prompt.json'
+def CoT_first_call(conversation, model, results_directory, queryname, plan_path):
     with open(plan_path, 'r') as file:
         plan_data = json.load(file)[0]
 
@@ -29,44 +23,61 @@ def evaluate_model(model, results_directory='../Results/'):
                    directory=results_directory, 
                    queryname=queryname, 
                    model=model)
-    if not success:
-        return False # time limit exceeded 
     
-    ### confusion prompt ###
+    return conversation, success, prompt_answer_dir
+
+
+def CoT_subsequent_calls(conversation, model, results_directory, prompt_answer_dir, queryname, plan_path):
+
     prompt_answer = load_txt_file(prompt_answer_dir) 
     conversation.add_message("assistant", prompt_answer)
 
-    queryname = "confusion_test"
+    with open(plan_path, 'r') as file:
+        plan_data = json.load(file)[0]
 
-    confusion_path = 'Prompts/confusion_prompt.json'
-    with open(confusion_path, 'r') as file:
-        confusion_data = json.load(file)[0]
-
-    conversation.add_message(str(confusion_data['role']), str(confusion_data['content']))
-
-    success, confusion_answer_dir = query_and_save(conversation, 
+    conversation.add_message(str(plan_data['role']), str(plan_data['content']))
+    
+    success, prompt_answer_dir = query_and_save(conversation, 
                    directory=results_directory, 
                    queryname=queryname, 
                    model=model)
+    
+    return conversation, success, prompt_answer_dir
+
+
+def unstructured_LLM(model, results_directory):
+    print("\n*** Unstructured LLM Model ***\n")
+    conversation = Conversation()
+    
+    ### confusion prompt ###
+    conversation, success, _ = CoT_first_call(
+        conversation, 
+        model, 
+        results_directory, 
+        queryname="test_unstructured_LLM", 
+        plan_path='Prompts/unstructured_LLM_prompt.json'
+    )
+
     if not success:
         return False # time limit exceeded 
-    
-    ### explanation prompt ###
-    confusion_answer = load_txt_file(confusion_answer_dir) 
-    conversation.add_message("assistant", confusion_answer)
+    else:
+        return True
 
-    queryname = "explanation_test"
 
-    explanation_path = 'Prompts/explanation_prompt.json'
-    with open(explanation_path, 'r') as file:
-        explanation_data = json.load(file)[0]
+def facts_based_LLM(model, results_directory):
+    print("\n*** Facts-based LLM Model ***\n")
 
-    conversation.add_message(str(explanation_data['role']), str(explanation_data['content']))
+    conversation = Conversation()
 
-    success, _ = query_and_save(conversation, 
-                   directory=results_directory, 
-                   queryname=queryname, 
-                   model=model)
+    ### plan prompt ###
+    conversation, success, all_facts_prompt_answer_dir = CoT_first_call(
+        conversation, 
+        model, 
+        results_directory, 
+        queryname="test_facts_based_LLM", 
+        plan_path='Prompts/facts_based_LLM_prompt.json'
+    )
+
     if not success:
         return False # time limit exceeded 
     else:
@@ -74,8 +85,15 @@ def evaluate_model(model, results_directory='../Results/'):
 
 
 def main():
-    evaluate_model(model='gpt-4-turbo')
+    gpt_model = 'gpt-4-turbo'
+    results_dir = '../Results/'
+
+    unstructured_LLM(model=gpt_model, results_directory=results_dir)
+    facts_based_LLM(model=gpt_model, results_directory=results_dir)
 
 
 if __name__ == '__main__':
     main()
+
+    # TODO could have chain of thought in one json (but need to plug in model's answer)
+    # TODO (assistant vs user vs system)
