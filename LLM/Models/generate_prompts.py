@@ -37,7 +37,7 @@ def load_txt_file(file_path):
 
 
 # populate dynamic content for confusion prompt
-def unstructured_LLM_prompt_content(example_domain=water, target_domain=dishes, file_path='Prompts/unstructured_LLM_prompt_skeleton.txt'):
+def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
 
@@ -73,7 +73,7 @@ def unstructured_LLM_prompt_content(example_domain=water, target_domain=dishes, 
 
 
 # populate dynamic content for all facts prompt
-def facts_based_LLM_prompt_content(example_domain=water, target_domain=dishes, file_path='Prompts/facts_based_LLM_prompt_skeleton.txt'):
+def facts_based_LLM_prompt_content(example_domain, target_domain, file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
 
@@ -102,25 +102,34 @@ def facts_based_LLM_prompt_content(example_domain=water, target_domain=dishes, f
 
 
 # Unstructured LLM Model 
-def unstructured_LLM():
-    # confusion prompt
+def unstructured_LLM(example_domain, target_domain):
+
+    file_path='Prompts/unstructured_LLM_prompt_skeleton.txt'
+
     # human_clarification_question = input("Enter the user clarification: ")
+
     save_to_json(
-        unstructured_LLM_prompt_content(), 
+        unstructured_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=file_path), 
         'Prompts/unstructured_LLM_prompt.json')
 
 
 # Facts based LLM Model
-def facts_based_LLM():
-    # all facts prompt
+def facts_based_LLM(example_domain, target_domain):
+
+    file_path='Prompts/facts_based_LLM_prompt_skeleton.txt'
+
     save_to_json(
-        facts_based_LLM_prompt_content(), 
+        facts_based_LLM_prompt_content(example_domain=example_domain, target_domain=target_domain, file_path=file_path), 
         'Prompts/facts_based_LLM_prompt.json')
 
 
 def main():
-    unstructured_LLM()
-    facts_based_LLM()
+
+    example_domain = water
+    target_domain = dishes
+
+    unstructured_LLM(example_domain, target_domain)
+    facts_based_LLM(example_domain, target_domain)
 
 if __name__ == "__main__":
     main()
