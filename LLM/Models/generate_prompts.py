@@ -11,7 +11,7 @@ def get_file_paths(model_name):
 
     skeleton_file_path= f"Prompts/{model_name}_prompt_skeleton.txt"
     json_file_path= f"Prompts/{model_name}_prompt.json"
-    txt_file_path= f"Prompts//human_readible_{model_name}_prompt.txt"
+    txt_file_path= f"Prompts//{model_name}_human_readible_prompt.txt"
 
     return skeleton_file_path, json_file_path, txt_file_path
 
