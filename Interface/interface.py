@@ -70,8 +70,9 @@ class WatchVideo(tk.Frame):
             self.play_pause_btn["text"] = "Play"
 
     def ask_question(self):
-        """Pauses the video and switches to the chat page."""
+        """Pauses the video, updates the Play button, and switches to the chat page."""
         self.vid_player.pause()  # Pause the video when the button is pressed
+        self.play_pause_btn["text"] = "Play"  # Update the Play/Pause button text
         self.controller.show_frame("ChatPage")
 
     def video_ended(self, event):
