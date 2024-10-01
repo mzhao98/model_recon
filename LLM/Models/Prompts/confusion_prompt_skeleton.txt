@@ -1,0 +1,4 @@
+The robot is carrying out its plan.
+As the robot was <insert-target-interrupted-action>, the human asked the following question: <insert-target-human-question>.
+
+Provide the most likely source for the human's confusion (only one).

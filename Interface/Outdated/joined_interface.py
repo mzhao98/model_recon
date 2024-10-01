@@ -4,7 +4,7 @@ from tkVideoPlayer import TkinterVideo
 import datetime
 from tkinter import filedialog
 
-from test_gpt import obtain_initial_plan, obtain_model_explanation
+from Interface.Outdated.test_gpt import obtain_initial_plan, obtain_model_explanation
 
 ### Code adapted from the following
 # https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
