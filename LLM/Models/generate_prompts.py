@@ -36,7 +36,7 @@ def load_txt_file(file_path):
         print(f"An error occurred: {e}")
 
 
-# populate dynamic content for confusion prompt
+# populate dynamic content for Unstructured LLM Model 
 def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
@@ -72,7 +72,7 @@ def unstructured_LLM_prompt_content(example_domain, target_domain, file_path):
     return file_content
 
 
-# populate dynamic content for all facts prompt
+# populate dynamic content for Facts based LLM Model
 def facts_based_LLM_prompt_content(example_domain, target_domain, file_path):
     """
     Loads the second prompt in the Chain-of-Thought, to identify the confusion underlying the question.
@@ -130,6 +130,7 @@ def main():
 
     unstructured_LLM(example_domain, target_domain)
     facts_based_LLM(example_domain, target_domain)
+
 
 if __name__ == "__main__":
     main()
