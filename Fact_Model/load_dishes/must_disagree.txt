@@ -1,2 +1,0 @@
-fact_2,fact_3
-fact_3,fact_4

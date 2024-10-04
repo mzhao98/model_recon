@@ -1,17 +1,22 @@
+import sys
+sys.path.append("..")
+
 class FactModel:
-    def __init__(self, name, domain_path):
+    def __init__(self, name, LLM_path):
         """
         Initializes the FactManager with paths to files for facts, 
         and the mutually inclusive/exclusive relational sets. 
         """
         self.name = name
         self.facts = {}
-        self.facts_path = f'{domain_path}facts.txt'
-        self.must_agree_path = f'{domain_path}must_agree.txt'
-        self.must_disagree_path = f'{domain_path}must_disagree.txt'
+        # self.facts_path = f'{domain_path}facts.txt'
+        # self.must_agree_path = f'{domain_path}must_agree.txt'
+        # self.must_disagree_path = f'{domain_path}must_disagree.txt'
+        self.LLM_fact_relations_path = f'{LLM_path}test_fact_relationship-gpt-4-turbo.txt'
         self.check_consistency = 1
 
-        self.load_facts_from_file()
+        # self.load_facts_from_file()
+        self.load_facts_from_domain_function()
 
     def populate_fact(self, fact_name, statement, confidence, visibility_status):
         """
@@ -117,6 +122,17 @@ class FactModel:
                 line = line.strip()
                 if line:
                     self.add_fact(line)
+
+    def load_facts_from_domain_function(self):
+        """
+        Loads the initial set of facts from a text file and populates the facts dictionary.
+        Each line in the file should be formatted as: name|statement|confidence|visibility.
+        """
+        lines = import_facts().split('\n')
+        for line in lines:
+            line = line.strip()
+            if line:
+                self.add_fact(line)
                         
     def check_fact_consistency(self, new_fact_name, new_fact_content):
         """
@@ -212,17 +228,36 @@ class FactModel:
         Loads the LLM generated must agree and must disagree set of acts.
         Assuming each line has exactly two facts.
         """
-        def load_relational_sets(file_path):
+        ### this was to laod from hardcoded must_agree.txt and must_disagree.txt
+        # def load_relational_sets(file_path):
+        #     relational_sets = []
+        #     with open(file_path, 'r') as file:
+        #         for line in file:
+        #             relational_facts = line.strip().split(',')
+        #             relational_facts.sort()  # Optional
+        #             relational_sets.append(relational_facts)
+        #     return relational_sets
+
+        # must_agree_sets = load_relational_sets(self.must_agree_path)
+        # must_disagree_sets = load_relational_sets(self.must_disagree_path)
+
+        ### this is to load from LLM output
+        def load_relational_sets(file_path, relationship_type):
             relational_sets = []
             with open(file_path, 'r') as file:
                 for line in file:
-                    relational_facts = line.strip().split(',')
-                    relational_facts.sort()  # Optional
-                    relational_sets.append(relational_facts)
+                    line = line.strip()
+                    if line.startswith(relationship_type):
+                        facts = line[len(relationship_type):].strip().split(',')
+                        if facts:  
+                            relational_sets.append(facts)
+
+            if relational_sets == [['']]:
+                return []
             return relational_sets
 
-        must_agree_sets = load_relational_sets(self.must_agree_path)
-        must_disagree_sets = load_relational_sets(self.must_disagree_path)
+        must_agree_sets = load_relational_sets(self.LLM_fact_relations_path, 'mutually inclusive:')
+        must_disagree_sets = load_relational_sets(self.LLM_fact_relations_path, 'mutually exclusive:')
 
         return must_agree_sets, must_disagree_sets
 
@@ -243,16 +278,18 @@ class FactModel:
 
 ### Load Dishes Fact Logic ###
 
-robot_model = FactModel(name='robot', domain_path='load_dishes/')
+from Domains.load_dishes import get_facts as import_facts
+robot_model = FactModel(name='robot', LLM_path='../Results/')
 robot_model.print_model()
+
 # robot_model.delete_fact('fact_2') # delete a fact
 # robot_model.modify_fact('fact_3', confidence=0) # change confidence from 0 to 1
 # robot_model.add_fact('fact_5|The dishwasher should be filled after the meal.|1|robot-private') # add a new fact
 # to change fact relations, please alter load_dishes/must_agree.txt or must_disagree.txt
 # robot_model.print_model()
 
-human_model = FactModel(name='human', domain_path='load_dishes/')
-human_model.print_model()
+# human_model = FactModel(name='human', domain_path='load_dishes/')
+# human_model.print_model()
 
 # TODO have LLM populate facts.txt?
 # TODO have LLM populate must_agree and must_disagree.

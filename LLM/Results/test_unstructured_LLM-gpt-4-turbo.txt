@@ -1,3 +1,3 @@
-Confusion Source: The human is confused because they observed the robot loading a plate they perceived as already clean into the dishwasher, which goes against the typical practice of only washing dirty dishes.
+Confusion Source: The human is confused because they observed the robot loading a plate they perceived as already clean into the dishwasher, which seems unnecessary.
 
-Explanation: I loaded the plate into the dishwasher because my sensors detected some residue that might not be easily visible. This ensures all dishes are thoroughly cleaned and hygienic.
+Explanation: I loaded the plate into the dishwasher because it was placed in the area designated for dirty dishes. If it was clean, it might have been mistakenly placed there, leading me to treat it as dirty.

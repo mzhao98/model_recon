@@ -1,13 +1,13 @@
-**All Facts:**
-- The robot is programmed to load dishes based on cleanliness, not specific locations (private-robot).
-- Humans expect dishes found on the table or counter to be loaded into the dishwasher (private-human).
-- The robot uses visual and sensor data to determine if a dish is dirty (private-robot).
-- Humans can visually identify which dishes they have placed on the table or counter (public).
-- The dishwasher is used to clean dirty dishes (public).
-- The robot has a programmed routine for loading dishes (private-robot).
+All Facts:
+- The robot is tasked with loading the dishwasher (public).
+- The robot uses visual sensors to identify dirty dishes (private-robot).
+- Some clean dishes might be mistakenly identified as dirty due to sensor errors or residue (private-robot).
+- Humans expect only dirty dishes to be loaded into the dishwasher (private-human).
+- The robot has a programmed routine for loading dishes efficiently (private-robot).
+- Humans can visually distinguish clean from dirty dishes more accurately than the robot (private-human).
 
-**Facts to Communicate:**
-- The robot is programmed to load dishes based on cleanliness, not specific locations (private-robot).
+Facts to Communicate:
+- Some clean dishes might be mistakenly identified as dirty due to sensor errors or residue (private-robot).
+- Humans expect only dirty dishes to be loaded into the dishwasher (private-human).
 
-**Explanation:**
-I understand your preference for loading dishes from the table or counter. However, I am programmed to assess and load dishes based on their cleanliness, as detected by my sensors, regardless of their location. This ensures that all necessary dishes are sanitized properly.
+Explanation: I loaded what appeared to be a dirty plate due to some residue or sensor error. I understand you expect only dirty dishes to be loaded, and it seems there was a mistake in identifying this particular plate as dirty.

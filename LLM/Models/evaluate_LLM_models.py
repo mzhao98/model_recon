@@ -125,9 +125,11 @@ def main():
     gpt_model = 'gpt-4-turbo'
     results_dir = '../Results/'
 
-    for model_name_i in ["unstructured_LLM", "facts_based_LLM"]:
-        query_model(model=gpt_model, results_directory=results_dir, model_name=model_name_i, bidirectional=1)
-
+    for model_name_i in ['fact_relationship', "unstructured_LLM", "facts_based_LLM"]:
+        if "fact_relationship" in model_name_i: # this model does not take human input yet 
+            query_model(model=gpt_model, results_directory=results_dir, model_name=model_name_i, bidirectional=0)
+        else:
+            query_model(model=gpt_model, results_directory=results_dir, model_name=model_name_i, bidirectional=1)
 
 if __name__ == '__main__':
     main()

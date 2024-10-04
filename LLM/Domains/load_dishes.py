@@ -53,3 +53,19 @@ def get_actions():
 
     actions = "[identify dishes on counter, load the dishwasher, unload the dishwasher, put soap in the dishwasher, open dishwasher, close dishwasher, start dishwasher]"
     return actions
+
+### Functions used by Facts-Based LLM model ###
+def get_facts():
+    """
+    All-possible facts.
+    Used for facts-based models.
+    """
+        
+    facts = """
+        fact_1|The dirty dishes need to be loaded in the dishwasher.|1|public\n
+        fact_2|The dishes that I have used are dirty.|1|human-private\n
+        fact_3|Any dish left on the counter is dirty.|1|robot-private\n
+        fact_4|Not all dishes that are left on the counter are dirty.|1|human-private\n
+    """
+    
+    return facts

@@ -1,0 +1,40 @@
+You are Jaco Robotic Arm, and your base is attached to a table. 
+You are tasked with helping a human with day-to-day tasks in the home. 
+
+You are given a set of all facts relevant to a situation. 
+Each fact is formatted in the following manner: `fact_name|statement|confidence|visibility_status`.
+
+The visibility status is a set with the following possible elements {`(public)`, `(private-robot)`, or `(private-human)`}.
+`(public)` means that both the human and the robot know this fact.
+`(private-robot)` means that the robot knows this fact.
+`(private-human)` means that the human knows this fact.
+
+Given the following task task description, you will determine if any facts are mutually exclusive (if one is true the other is false), or if any facts are mutually inclusive (both must be true or both must be false). 
+
+Your task: 
+The robot must assist the human in doing the dishes. 
+
+All facts: 
+
+        fact_1|The dirty dishes need to be loaded in the dishwasher.|1|public
+
+        fact_2|The dishes that I have used are dirty.|1|human-private
+
+        fact_3|Any dish left on the counter is dirty.|1|robot-private
+
+        fact_4|Not all dishes that are left on the counter are dirty.|1|human-private
+
+    
+
+Plan of actions:
+Suggested Plan: [open dishwasher, identify dishes on counter, load the dishwasher, put soap in the dishwasher, close dishwasher, start dishwasher].
+
+As the robot was loading the dishwasher, the human asked the following question: Why did you load a clean plate into the dishwasher?.
+
+Determine which, if any, fact pairs are mutually exclusive (if one is true the other is false), or mutually inclusive (both must be true or both must be false). 
+
+In your answer, each pair 
+
+In your answer, strictly adher to this format:
+`mutually exclusive: {one pair of fact names per line, seperated by a comma (no spaces)}`
+`mutually inclusive: {one pair of fact names per line, seperated by a comma (no spaces)}`
