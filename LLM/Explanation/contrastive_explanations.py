@@ -1,5 +1,7 @@
 ### Contrastive Explanations ###
 def get_contrastive_explanation():
+    # TODO define the foil and fact more clearly (say contrastive explanation)
+    # TODO try counterfactual explanations 
     contrastive_explanation = "if the human asks you a Why question, identify the fact (what happened), and it's implicit foil (human expectation). Then, in your explanation, incorporate both fact and foil."
     return contrastive_explanation
 
